@@ -1,0 +1,14 @@
+{
+  "name": "point-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "slackbots": "^1.2.0"
+  }
+}
