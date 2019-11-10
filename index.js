@@ -12,7 +12,6 @@ var players = {};
 var bountyIndex = 0;
 var openBounties = [];
 
-
 // TODO: change the bot.postMessage to only post in the best team ever group
 // add time so we can have the reviewer of the month
 
@@ -37,7 +36,7 @@ bot.on("message", msg => {
 
             } else if (msg.text.indexOf('!test') === 0) {
                 bot.getUserById(msg.user).then(data => {
-                    console.log('test getting user' + data);
+                    console.log('test getting user' + JSON.stringify(data));
                 });
             }
             else {
