@@ -1,8 +1,9 @@
 var SlackBot = require('slackbots');
+const envKey = process.env.JOKES_BOT_TOKEN;
 
 // create a bot
 var bot = new SlackBot({
-    token: 'xoxb-25508874064-816109600033-CrsnQMOSKob7VHVlyhWUqFRt', // Add a bot https://my.slack.com/services/new/bot and put the token
+    token: envKey,
     name: 'points'
 });
 
@@ -20,25 +21,23 @@ bot.on("message", msg => {
       case "message":
         if (!players[msg.user]) {
             if (msg.text.indexOf('!newMate') === 0) {
-                //add validation
                  bot.getUserById(msg.user).then(u => {
                     if (u) {
                         players[u.id] = {points: 0, claimedBounties: [], user: u};
                         bot.postMessage(msg.user, 'New mate added successfully!', {as_user: true, icon_emoji: ':cake:'})
                     } else {
-                        bot.postMessage(msg.user, 'Sorry please try again (or maually)', {
+                        bot.postMessage(msg.user, 'Sorry please try again (or manually)', {
                             as_user: true,
                             icon_emoji: ':cake:'
                         })
                     }
                 }).catch(err => {
-                    bot.postMessage(msg.user, 'Sorry please try again (or maually)', {as_user: true, icon_emoji: ':cake:'})
+                    bot.postMessage(msg.user, 'Sorry please try again (or manually)', {as_user: true, icon_emoji: ':cake:'})
                  });
 
             } else if (msg.text.indexOf('!test') === 0) {
-                console.log(msg);
                 bot.getUserById(msg.user).then(data => {
-                    console.log(data);
+                    console.log('test getting user' + data);
                 });
             }
             else {
@@ -94,21 +93,21 @@ bot.on("message", msg => {
 
             } else if (msg.text.indexOf('!rank') === 0) {
 
-                var ranks = [];
+                let ranks = [];
                 Object.keys(players).forEach(function (key) {
                     ranks.push(players[key].user.name + ': ' + players[key].points);
                 });
-                bot.postMessage(msg.user, 'the Ranks are: \n' + ranks.join('\n'), {as_user: true, icon_emoji: ':cake:'})
+                bot.postMessage(msg.user, 'the Ranks are: \n' + ranks.join('\n'), {as_user: true })
 
             } else if (msg.text.indexOf('!open') === 0) {
 
-                var bounties = [];
+                let bounties = [];
 
                 openBounties.forEach(b => {
                     bounties.push(b.owner.name + ' - ' + b.points + 'points  ' + b.link)
                 });
 
-                bot.postMessage(msg.user, 'the open Bounties are: \n' + bounties.join('\n'), {as_user: true, icon_emoji: ':cake:'})
+                bot.postMessage(msg.user, 'the open Bounties are: \n' + bounties.join('\n'), {as_user: true })
             }
         }
         break
@@ -124,5 +123,5 @@ function getPlayers(msg) {
 }
 
 function nonExistingUser(msg) {
-    bot.postMessage(msg.user, 'you are a new user glad to have you in owr crwe! \n to continue please send the following command: !newMate:[here fill your first name and last name name.last] and repeat the action you attempted to do', { as_user: true, icon_emoji: ':cake:'})
+    bot.postMessage(msg.user, 'you are a new user glad to have you in owr crwe! \n to continue please send the following command: !newMate and repeat the action you attempted to do', { as_user: true })
 }
